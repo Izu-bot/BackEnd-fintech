@@ -1,0 +1,7 @@
+INDEX VERSION 1.4+/home/kauan/Documents/FintechWeb/.metadata/.plugins/org.eclipse.wst.jsdt.core/indexes
+1781376354.index
+3014935349.index
+1541921821.index
+4238842097.index
+1060751975.index
+198232023.index

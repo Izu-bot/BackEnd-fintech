@@ -1,0 +1,98 @@
+package br.com.fintech.bean;
+
+import java.util.Calendar;
+
+import br.com.fintech.util.CriptografiaUtils;
+
+public class Usuario {
+	private int codigoUsuario;
+	private String nome;
+	private String sobrenome;
+	private String senha;
+	private String email;
+	private String cpf;
+	private Calendar dataNasc;
+	
+	
+	public Usuario(int codigo ,String senha, String email) {
+		super();
+		this.codigoUsuario = codigo;
+		setSenha(senha);
+		this.email = email;
+	}
+	
+	public Usuario(int codigo, String nome, String sobrenome, String email, String cpf, Calendar dataNasc) {
+		super();
+		this.codigoUsuario = codigo;
+		this.nome = nome;
+		this.sobrenome = sobrenome;
+		this.email = email;
+		this.cpf = cpf;
+		this.dataNasc = dataNasc;
+	}
+	
+	public Usuario(int codigo, String nome, String sobrenome, String senha, String email, String cpf, Calendar data) {
+		super();
+		this.codigoUsuario = codigo;
+		this.nome = nome;
+		this.sobrenome = sobrenome;
+		setSenha(senha);
+		this.email = email;
+		this.cpf = cpf;
+		this.dataNasc = data;
+	}
+	
+	
+	public int getCodigoUsuario() {
+		return codigoUsuario;
+	}
+
+	public void setCodigoUsuario(int codigoUsuario) {
+		this.codigoUsuario = codigoUsuario;
+	}
+
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+	public String getSobrenome() {
+		return sobrenome;
+	}
+	public void setSobrenome(String sobrenome) {
+		this.sobrenome = sobrenome;
+	}
+	public String getSenha() {
+		return senha;
+	}
+	public void setSenha(String senha) {
+		try {
+			this.senha = CriptografiaUtils.criptografar(senha);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public Calendar getDataNasc() {
+		return dataNasc;
+	}
+	public void setDataNasc(Calendar dataNasc) {
+		this.dataNasc = dataNasc;
+	}
+	
+	
+}

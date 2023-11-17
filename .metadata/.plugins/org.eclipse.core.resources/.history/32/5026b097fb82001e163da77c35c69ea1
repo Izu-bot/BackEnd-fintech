@@ -1,0 +1,35 @@
+package br.com.fintech.singleton;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+
+public class Conexao {
+
+	private static Conexao conexao;
+	
+	private Conexao() {
+		
+	}
+	
+	public static Conexao getInstance() {
+		if (conexao == null) {
+			conexao = new Conexao();
+		}
+		return conexao;
+	}
+	
+	
+	public Connection getConnection() {
+		Connection connection = null;
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			connection = DriverManager.getConnection("jdbc:oracle:thins:@oracle.fiap.com.br:1521.ORCL",
+					"rm550758", "290604");
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return connection;
+	}
+	
+}

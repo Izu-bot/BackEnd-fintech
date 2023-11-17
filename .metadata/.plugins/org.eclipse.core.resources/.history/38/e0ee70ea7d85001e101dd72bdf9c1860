@@ -1,0 +1,10 @@
+package br.com.fintech.util;
+
+import java.security.MessageDigest;
+
+public class CriptografiaUtils {
+
+	public static String criptografar(String senha) throws Exception {
+		// Obtém a instanci de um algoritmo
+		MessageDgest md = MessageDigest.getInstance("MD5")}
+}

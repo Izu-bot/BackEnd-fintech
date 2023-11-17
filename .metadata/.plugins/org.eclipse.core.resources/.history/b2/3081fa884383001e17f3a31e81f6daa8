@@ -1,0 +1,173 @@
+package br.com.fintech.dao.impl;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+
+import br.com.fintech.bean.Usuario;
+import br.com.fintech.dao.UsuarioDAO;
+import br.com.fintech.exception.DBException;
+import br.com.fintech.singleton.Conexao;
+
+public class OracleUsuarioDAO implements UsuarioDAO{
+
+	private Connection conexao;
+	
+	
+	@Override
+	public void cadastrar(Usuario usuario) throws DBException {
+		PreparedStatement stmt = null;
+		try {
+			conexao = Conexao.getInstance().getConnection();
+			String sql = "INSERT INTO T_USUARIO (CD_USUARIO, NM_USUARIO, NM_SOBRENOME, SENHA, DS_EMAIL, NR_CPF, DR_NASCIMENTO) VALUES (SEQ_USU.NEXTVAL,  ?, ?, ?, ?, ?, ?)";
+			stmt = conexao.prepareStatement(sql);
+			stmt.setString(1, usuario.getNome());
+			stmt.setString(2, usuario.getSobrenome());
+			stmt.setString(3, usuario.getSenha());
+			stmt.setString(4, usuario.getEmail());
+			stmt.setString(5, usuario.getCpf());
+			
+			java.sql.Date data = new java.sql.Date(usuario.getDataNasc().getTimeInMillis());
+			stmt.setDate(6, data);
+			
+			stmt.executeUpdate();
+		} catch(SQLException e) {
+			e.printStackTrace();
+			throw new DBException("Erro ao cadastrar.");
+		} finally {
+			try {
+				stmt.close();
+				conexao.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public void atualizar(Usuario usuario) throws DBException {
+		PreparedStatement stmt = null;
+		try {
+			conexao = Conexao.getInstance().getConnection();
+			String sql = "UPDATE T_USUARIO SET SENHA = ?, DS_EMAIL = ? WHERE CD_USUARIO = ?";
+			stmt = conexao.prepareStatement(sql);
+			stmt.setString(1, usuario.getSenha());
+			stmt.setString(2, usuario.getEmail());
+			stmt.setInt(3, usuario.getCodigoUsuario());
+			
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DBException("Erro ao atualizar.");
+		} finally {
+			try {
+				stmt.close();
+				conexao.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public void remover(int cd) throws DBException {
+		PreparedStatement stmt = null;
+		try {
+			conexao = Conexao.getInstance().getConnection();
+			String sql = "DELETE FROM T_USUARIO WHERE CD_USUARIO = ?";
+			stmt = conexao.prepareStatement(sql);
+			stmt.setInt(1, cd);
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DBException("Erro ao remover.");
+		} finally {
+			try {
+				stmt.close();
+				conexao.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}	
+		}
+		
+	}
+
+	@Override
+	public Usuario buscar(int cd) {
+		Usuario usuario = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			conexao = Conexao.getInstance().getConnection();
+			String sql = "SELECT * FROM T_USUARIO WHERE CD_USUARIO = ?";
+			stmt = conexao.prepareStatement(sql);
+			stmt.setInt(1, cd);
+			rs = stmt.executeQuery();
+			
+			if(rs.next()) {
+				int codigo = rs.getInt("CD_USUARIO");
+				String nome = rs.getString("NM_USUARIO");
+				String sobrenome = rs.getString("NM_SOBRENOME");
+				String email = rs.getString("DS_EMAIL");
+				String cpf = rs.getString("NR_CPF");
+				java.sql.Date data = rs.getDate("DT_NASCIMENTO");
+				Calendar dataNascimento = Calendar.getInstance();
+				dataNascimento.setTimeInMillis(data.getTime());
+				
+				usuario = new Usuario(codigo, nome, sobrenome, email, cpf, dataNascimento);
+			}
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			try {
+				stmt.close();
+				rs.close();
+				conexao.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return usuario;
+	}
+
+	@Override
+	public List<Usuario> listar() {
+		List<Usuario> lista = new ArrayList<Usuario>();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			conexao = Conexao.getInstance().getConnection();
+			stmt = conexao.prepareStatement("SELECT * FROM T_USUARIO");
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				int codigo = rs.getInt("CD_USUARIO");
+				String nome = rs.getString("NM_USUARIO");
+				String sobrenome = rs.getString("NM_SOBRENOME");
+				String email = rs.getString("DS_EMAIL");
+				String cpf = rs.getString("NR_CPF");
+//				java.sql.Date data = rs.getDate("DT_NASCIMENTO");
+				Calendar dataNascimento = Calendar.getInstance();
+//				dataNascimento.setTimeInMillis(data.getTime());
+
+				Usuario usuario = new Usuario(codigo, nome, sobrenome, email, cpf, dataNascimento);
+				lista.add(usuario);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+				rs.close();
+				conexao.close();
+			}catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return lista;
+	}
+}

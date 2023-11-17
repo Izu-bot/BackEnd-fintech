@@ -1,0 +1,20 @@
+package br.com.fintech.controller;
+
+import javax.servlet.http.HttpServlet;
+
+import br.com.fintech.bo.EmailBO;
+import br.com.fintech.dao.UsuarioDAO;
+import br.com.fintech.factory.DAOFactory;
+
+public class LoguinServlet extends HttpServlet {
+
+	private static final long serialVersionUID = 1L;
+
+	private UsuarioDAO dao;
+	private EmailBO bo;
+  
+	public LoginServlet() {
+        dao = DAOFactory.getUsuarioDAO();
+        bo = new EmailBO();
+	}
+}

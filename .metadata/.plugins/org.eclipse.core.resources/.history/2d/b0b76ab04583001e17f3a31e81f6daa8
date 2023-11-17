@@ -1,0 +1,61 @@
+package br.com.fintech.controller;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import br.com.fintech.bean.Usuario;
+import br.com.fintech.dao.UsuarioDAO;
+import br.com.fintech.exception.DBException;
+import br.com.fintech.factory.DAOFactory;
+
+@WebServlet("/usuario")
+public class UsuarioServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+	private UsuarioDAO dao;
+	
+    public UsuarioServlet() {
+        super();
+        dao = DAOFactory.getUsuarioDAO();
+    }
+
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try {
+			String nome = request.getParameter("nome");
+			String sobrenome = request.getParameter("sobrenome");
+			String senha = request.getParameter("senha");
+			String email = request.getParameter("email");
+			String cpf = request.getParameter("cpf");
+			
+//			Codigo do professor para converter a data.
+			SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat fromScreen = new SimpleDateFormat("yyyy-MM-dd");
+
+			String formattedDateStr = myFormat.format(fromScreen.parse(request.getParameter("data")));
+			Calendar data  = Calendar.getInstance();
+			data.setTime(myFormat.parse(formattedDateStr));
+			
+			Usuario usuario = new Usuario(0, nome, sobrenome, senha, email, cpf, data);
+			dao.cadastrar(usuario);
+			
+			request.setAttribute("msg", "Usuario cadastrado");
+		} catch (DBException db) {
+			db.printStackTrace();
+			request.setAttribute("erro", "Erro ao cadastrar usuário");
+		}
+	}
+
+}

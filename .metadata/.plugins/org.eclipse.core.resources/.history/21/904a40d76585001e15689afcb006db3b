@@ -1,0 +1,118 @@
+package br.com.fintech.controller;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import br.com.fintech.bean.Usuario;
+import br.com.fintech.dao.UsuarioDAO;
+import br.com.fintech.exception.DBException;
+import br.com.fintech.factory.DAOFactory;
+
+@WebServlet("/usuario")
+public class UsuarioServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+	private UsuarioDAO dao;
+	
+    public UsuarioServlet() {
+        super();
+        dao = DAOFactory.getUsuarioDAO();
+    }
+
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String acao = request.getParameter("acao");
+		
+		switch(acao) {
+		case "listar":
+			listar(request, response);
+			break;
+		case "abrir-form-edicao":
+			int id = Integer.parseInt(request.getParameter("codigo"));
+			Usuario usuario = dao.buscar(id);
+			request.setAttribute("usuario", usuario);
+			request.getRequestDispatcher("edicao-usuario.jsp").forward(request, response);
+		}
+	
+	}
+
+
+	private void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		List<Usuario> listar = dao.listar();
+		request.setAttribute("usuario", listar);
+		request.getRequestDispatcher("listar-usuarios.jsp").forward(request, response);
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String acao = request.getParameter("acao");
+		
+		switch (acao) {
+		case "cadastrar":
+			cadastrar(request, response);
+			break;
+		case "editar":
+			editar(request,response);
+			break;
+		}
+	}
+
+
+	private void cadastrar(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		try {
+			String nome = request.getParameter("nome");
+			String sobrenome = request.getParameter("sobrenome");
+			String senha = request.getParameter("senha");
+			String email = request.getParameter("email");
+			String cpf = request.getParameter("cpf");
+			
+//			Codigo do professor para converter a data.
+			SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat fromScreen = new SimpleDateFormat("yyyy-MM-dd");
+
+			String formattedDateStr = myFormat.format(fromScreen.parse(request.getParameter("data")));
+			Calendar data  = Calendar.getInstance();
+			data.setTime(myFormat.parse(formattedDateStr));
+			
+			Usuario usuario = new Usuario(0, nome, sobrenome, senha, email, cpf, data);
+			dao.cadastrar(usuario);
+			
+			request.setAttribute("msg", "Usuario cadastrado");
+		} catch (DBException db) {
+			db.printStackTrace();
+			request.setAttribute("erro", "Erro ao cadastrar usuario");
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.setAttribute("erro", "Por favor, valide os dados");
+		}
+		request.getRequestDispatcher("cadastro-usuario.jsp").forward(request, response);
+	}
+	
+	private void editar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try {			
+			String senha = request.getParameter("senha");
+			String email = request.getParameter("email");
+
+			
+			Usuario usuario = new Usuario(senha, email);
+			dao.atualizar(usuario);
+			request.setAttribute("msg", "Usuario atualizado");
+		} catch (DBException db) {
+			db.printStackTrace();
+			request.setAttribute("erro", "Erro ao atualizar");
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.setAttribute("erro", "Por favor, valide os dados");
+		}
+		listar(request,response);
+	}
+
+}

@@ -1,0 +1,73 @@
+package br.com.fintech.controller;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import br.com.fintech.bean.Usuario;
+import br.com.fintech.dao.UsuarioDAO;
+import br.com.fintech.exception.DBException;
+import br.com.fintech.factory.DAOFactory;
+
+/**
+ * Servlet implementation class CadastroServlet
+ */
+@WebServlet("/criar-conta")
+public class CadastroServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+	private UsuarioDAO dao;
+	
+	@Override
+	public void init() throws ServletException{
+		super.init();
+		dao = DAOFactory.getUsuarioDAO();
+	}
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try {
+			String nome = request.getParameter("nome");
+			String sobrenome = request.getParameter("sobrenome");
+			String cpf = request.getParameter("cpf");
+			String senha = request.getParameter("senha");
+			String email = request.getParameter("email");
+			
+			SimpleDateFormat myFormat = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat fromScreen = new SimpleDateFormat("yyyy-MM-dd");
+
+			String formattedDateStr = myFormat.format(fromScreen.parse(request.getParameter("data")));
+			Calendar data  = Calendar.getInstance();
+			data.setTime(myformat.parse(formattedDateStr));
+			
+			
+			Usuario usuario = new Usuario(0, nome, sobrenome, cpf, senha, email, data);
+			dao.cadastrar(usuario);
+
+			request.setAttribute("msg", "Usuário cadastrado!");
+		} catch (DBException db) {
+			db.printStackTrace();
+			request.setAttribute("erro", "Erro ao cadastrar");
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.setAttribute("erro","Por favor, valide os dados");
+		}
+		request.getRequestDispatcher("cadastro-usuario.jsp").forward(request, response);
+	}
+
+}

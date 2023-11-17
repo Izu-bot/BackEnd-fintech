@@ -1,0 +1,42 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<%@ include file="header.jsp" %>
+</head>
+<body>
+<%@ include file="menu.jsp" %>
+
+	<div class="container">
+		<h1>Usuarios</h1>
+		<table class="table table-striped">
+			<tr>
+				<th>Nome</th>
+				<th>Sobrenome</th>
+				<th>E-mail</th>
+				<th>CPF</th>
+				<th>Data Nascimento</th>
+				<button class="btn btn-primary"></button>
+			</tr>
+			<c:forEach items="${usuario}" var="u">
+				<tr>
+					<td>${u.nome}</td>
+					<td>${u.sobrenome}</td>
+					<td>${u.email}</td>
+					<td>${u.cpf}</td>
+					<td>
+					<fmt:formatDate value="${u.dataNasc.time}" pattern="dd/MM/yyyy"/>
+					</td>
+				</tr>
+				</c:forEach>
+		</table>
+	</div>
+
+<%@ include file="footer.jsp" %>
+</body>
+</html>

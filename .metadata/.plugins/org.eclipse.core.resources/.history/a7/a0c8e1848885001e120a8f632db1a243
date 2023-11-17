@@ -1,0 +1,49 @@
+package br.com.fintech.teste;
+
+import java.util.Calendar;
+import java.util.List;
+
+import br.com.fintech.bean.Usuario;
+import br.com.fintech.dao.UsuarioDAO;
+import br.com.fintech.exception.DBException;
+import br.com.fintech.factory.DAOFactory;
+
+public class UsuarioDAOTeste {
+
+	public static void main(String[] args) {
+		UsuarioDAO dao = DAOFactory.getUsuarioDAO();
+		
+		Usuario usuario = new Usuario(0, "Kauan", "Cardoso", "123", "email@email.com", "12312312319", Calendar.getInstance());
+
+//		try {
+//			dao.cadastrar(usuario);
+//			System.out.println("Usuario Cadastrado.");
+//		} catch (DBException e) {
+//			e.printStackTrace();
+//		}
+		
+		usuario = dao.validarUsuario(usuario.getEmail());
+		usuario = dao.buscar(132);	
+		usuario.setEmail("teste@teste.com");
+		usuario.setSenha("3984uy39824u3");
+//		try {
+
+//			dao.atualizar(usuario);
+//			System.out.println("Usuario atualizado.");
+//		} catch (DBException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		List<Usuario> lista = dao.listar();
+//		for(Usuario item : lista) {
+//			System.out.println(item.getEmail() + " " + item.getNome() + " " + item.getSobrenome() + " " + item.getDataNasc());
+//		}
+		
+//		try {
+//			dao.remover(131);
+//			System.out.println("Usuario Removido.");
+//		} catch (DBException e) {
+//			e.printStackTrace();
+//		}
+ 	}
+}
