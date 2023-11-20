@@ -1,0 +1,11 @@
+package br.com.fintech.teste;
+
+import br.com.fintech.dao.GastoDAO;
+import br.com.fintech.factory.DAOFactory;
+
+public class GastoTeste {
+	public static void main(String[] args) {
+		GastoDAO dao = new DAOFactory.getGastoDAO()
+		
+	}
+}

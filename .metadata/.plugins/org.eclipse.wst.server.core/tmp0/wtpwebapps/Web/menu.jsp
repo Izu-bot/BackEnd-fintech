@@ -2,7 +2,7 @@
 
 <nav class="navbar navbar-expand-lg bg-dark-subtle">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Fintech</a>
+    <a class="navbar-brand" href="home.jsp">Fintech</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -14,6 +14,18 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" href="usuario?acao=listar">Listar Usuarios</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="cadastro-investimento.jsp">Seus investimentos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="investimento?acao=listar">Listar investimentos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="cadastro-gasto.jsp">Seus gastos</a>
+      </li>
+       <li class="nav-item">
+        <a class="nav-link" href="gasto?acao=listar">Listar gasto</a>
       </li>
     </ul>
       </div>

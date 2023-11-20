@@ -1,0 +1,9 @@
+package br.com.fintech.bean;
+
+public class Investimento {
+	private int codigoInvestimento;
+	private int codigoUsuario;
+	private String nome;
+	private double valor;
+	private String descricao;
+}

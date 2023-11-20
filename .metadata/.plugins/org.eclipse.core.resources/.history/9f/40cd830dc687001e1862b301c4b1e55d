@@ -1,0 +1,13 @@
+package br.com.fintech.teste;
+
+import br.com.fintech.bean.Investimento;
+import br.com.fintech.dao.InvestimentoDAO;
+import br.com.fintech.factory.DAOFactory;
+
+public class InvestimentoDAOTeste {
+		public static void main(String[] args) {
+			InvestimentoDAO dao = DAOFactory.getInvestimentoDAO();
+			
+			Investimento investimento = new Investimento(0, 167,"Empresa", 180.0, "alguma coisa");
+		}
+}

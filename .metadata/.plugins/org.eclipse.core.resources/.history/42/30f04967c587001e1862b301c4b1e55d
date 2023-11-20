@@ -1,0 +1,167 @@
+package br.com.fintech.dao.impl;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import br.com.fintech.bean.Investimento;
+import br.com.fintech.dao.InvestimentoDAO;
+import br.com.fintech.exception.DBException;
+import br.com.fintech.singleton.Conexao;
+
+public class OracleIncvestimentoDAO implements InvestimentoDAO{
+
+	private Connection conexao;
+	
+
+	@Override
+	public void cadastrar(Investimento investimento) throws DBException {
+		
+		PreparedStatement stmt = null;
+		try {
+			conexao = Conexao.getInstance().getConnection();
+			String sql = "INSERT INTO T_INVESTIMENTO (CD_INVESTIMENTO, CD_USUARIO, NM_INVESTIMENTO, VLR_INVESTIDO, DS_INVESTIMENTO) VALUES (SEQ_INV.NEXTVAL, ?, ?, ?, ?)";
+			stmt = conexao.prepareStatement(sql);
+			stmt.setInt(1, investimento.getCodigoUsuario());
+			stmt.setString(2, investimento.getNome());
+			stmt.setDouble(3,  investimento.getValor());
+			stmt.setString(4, investimento.getDescricao());
+			
+			stmt.executeUpdate();
+		} catch(SQLException e) {
+			e.printStackTrace();
+			throw new DBException("Erro ao cadastrar investimento.");
+		} finally {
+			try {
+				stmt.close();
+				conexao.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public void atualizar(Investimento investimento) throws DBException {
+		PreparedStatement stmt = null;
+		try {
+			conexao = Conexao.getInstance().getConnection();
+			String sql = "UPDATE T_INVESTIMENTO SET NM_INVESTIMENTO = ?, VLR_INVESTIDO = ?, DS_INVESTIMENTO = ? WHERE CD_INVESTIMENTO = ?";
+			stmt = conexao.prepareStatement(sql);
+			stmt.setString(1, investimento.getNome());
+			stmt.setDouble(2, investimento.getValor());
+			stmt.setString(3, investimento.getDescricao());
+			stmt.setInt(4, investimento.getCodigoInvestimento());
+			
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DBException("Erro ao atualizar Investimento");
+		} finally {
+			try {
+				stmt.close();
+				conexao.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+
+	@Override
+	public void remover(int cd) throws DBException {
+		PreparedStatement stmt = null;
+		try {
+			conexao = Conexao.getInstance().getConnection();
+			String sql = "DELET FROM T_INVESTIMENTO WHERE CD_INVESTIMENTO = ?";
+			stmt = conexao.prepareStatement(sql);
+			stmt.setInt(1, cd);
+			
+			stmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new DBException("Erro ao remover Investimento.");
+		} finally {
+			try {
+				stmt.close();
+				conexao.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}	
+		}
+	}
+
+	@Override
+	public Investimento buscar(int cd) {
+		Investimento investimento = null;
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		try {
+			conexao = Conexao.getInstance().getConnection();
+			String sql = "SELECT * FROM T_INVESTIMENTO WHERE CD_INVESTIMENTO = ?";
+			stmt = conexao.prepareStatement(sql);
+			stmt.setInt(1, cd);
+			rs = stmt.executeQuery();
+			
+			if(rs.next()) {
+				int codigoInv = rs.getInt("CD_INVESTIMENTO");
+				int codigoUsu = rs.getInt("CD_USUARIO");
+				String nome = rs.getString("NM_INVESTIMENTO");
+				double valor = rs.getDouble("VLR_INVESTIDO");
+				String descricao = rs.getString("DS_INVESTIMENTO");
+				
+				investimento = new Investimento(codigoInv, codigoUsu, nome, valor, descricao);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+				rs.close();
+				conexao.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return investimento;
+	}
+	
+	@Override
+	public List<Investimento> listar() {
+		List<Investimento> lista = new ArrayList<Investimento>();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		
+		try {
+			conexao = Conexao.getInstance().getConnection();
+			stmt = conexao.prepareStatement("SELECT * FROM T_INVESTIMENTO");
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				int codigoInv = rs.getInt("CD_INVESTIMENTO");
+				int codigoUsu = rs.getInt("CD_USUARIO");
+				String nome = rs.getString("NM_INVESTIMENTO");
+				double valor = rs.getDouble("VLR_INVESTIDO");
+				String descricao = rs.getString("DS_INVESTIMENTO");
+				
+				Investimento investimento = new Investimento(codigoInv, codigoUsu, nome, valor, descricao);
+				lista.add(investimento);
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				stmt.close();
+				rs.close();
+				conexao.close();
+			} catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return lista;
+	}
+
+}

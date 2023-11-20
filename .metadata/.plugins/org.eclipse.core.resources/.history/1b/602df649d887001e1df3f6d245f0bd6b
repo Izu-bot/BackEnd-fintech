@@ -1,0 +1,14 @@
+package br.com.fintech.teste;
+
+import br.com.fintech.bean.Gasto;
+import br.com.fintech.dao.GastoDAO;
+import br.com.fintech.factory.DAOFactory;
+
+public class GastoTeste {
+	public static void main(String[] args) {
+		
+		GastoDAO dao = DAOFactory.getGastoDAO();
+		
+		Gasto gasto = new Gasto(0, 167, "nome", 45, "asasa");
+	}
+}

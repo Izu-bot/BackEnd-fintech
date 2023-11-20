@@ -1,0 +1,7 @@
+package br.com.fintech.dao.impl;
+
+import br.com.fintech.dao.GastoDAO;
+
+public class OracleGastoDAO  implements GastoDAO{
+
+}

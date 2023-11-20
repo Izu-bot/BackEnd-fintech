@@ -11,7 +11,8 @@
 
 <%@ include file="menu.jsp" %>
 	<div class="container">
-		<h1>Bem Vindos ao FiapStore</h1>
+		<h1 class="m-4">Bem Vindos ao Banco Fintech</h1>
+		<p>Para o cadastro de gasto ou investimento utilize o codigo de usuário 167. Não consegui recuperar o codigo pela sessão :(</p>
 			
 		<%@ include file="footer.jsp" %>
 	</div>

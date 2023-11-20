@@ -1,0 +1,106 @@
+package br.com.fintech.controller;
+
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import br.com.fintech.bean.Gasto;
+import br.com.fintech.dao.GastoDAO;
+import br.com.fintech.exception.DBException;
+import br.com.fintech.factory.DAOFactory;
+
+/**
+ * Servlet implementation class GastoServlet
+ */
+@WebServlet("/gasto")
+public class GastoServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+	private GastoDAO dao;
+  
+    public GastoServlet() {
+        super();
+        dao = DAOFactory.getGastoDAO();
+    }
+
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String acao = request.getParameter("acao");
+
+		switch(acao) {
+		case "listar":
+			listar(request, response);
+			break;
+		}
+	}
+
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String acao = request.getParameter("acao");
+		
+		switch(acao) {
+		case "cadastrar":
+			cadastrar(request,response);
+			break;
+		}
+	}
+	
+	private void listar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		List<Gasto> listar = dao.listar();
+		request.setAttribute("gasto", listar);
+		request.getRequestDispatcher("listar-gasto.jsp").forward(request, response);
+	}
+	
+	private void cadastrar(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		try {
+			String nome = request.getParameter("nome");
+			double valor = Double.parseDouble(request.getParameter("valor"));
+			String descricao = request.getParameter("descricao");
+			int codigoUsu = Integer.parseInt(request.getParameter("codigo"));
+
+			
+			Gasto gasto = new Gasto(0, codigoUsu, nome, valor, descricao);
+			dao.cadastrar(gasto);
+			
+			request.setAttribute("msg", "Gasto cadastro");
+		} catch (DBException db) {
+			db.printStackTrace();
+			request.setAttribute("erro", "Erro ao cadastra gasto");
+		} catch (Exception e ) {
+			e.printStackTrace();
+			request.setAttribute("erro", "Por favor, valide os dados");
+		}
+		request.getRequestDispatcher("cadastro-gasto.jsp").forward(request, response);
+		
+	}
+	
+	private void editar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try {			
+			String nome = request.getParameter("nome");
+			double valor = Double.parseDouble(request.getParameter("valor"));
+			String descricao = request.getParameter("descricao");
+			int codigoUsu = Integer.parseInt(request.getParameter("codigo"));
+
+			
+			Gasto gasto = new Gasto(codigoUsu, nome, valor, descricao);
+			
+			
+			dao.atualizar(usuario);
+			request.setAttribute("msg", "Gasto atualizado");
+		} catch (DBException db) {
+			db.printStackTrace();
+			request.setAttribute("erro", "Erro ao atualizar");
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.setAttribute("erro", "Por favor, valide os dados");
+		}
+		listar(request,response);
+	}
+
+}

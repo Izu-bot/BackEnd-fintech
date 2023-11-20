@@ -1,0 +1,37 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Editar</title>
+<%@ include file="menu.jsp" %>
+</head>
+<body>
+<%@ include file="menu.jsp" %>
+
+<div class="container">
+		<h1>Edição de Gasto</h1>
+		<form action="usuario" method="post">
+			<input type="hidden" value="editar" name="acao">
+			<input type="hidden" value="${gasto.codigoGasto}" name="codigo">
+		<div class="form-goup">
+			<label for="id-nome">Nome</label>
+			<input type="text" name="nome" id="id-nome" class="form-control" value="${gasto.nome}" />
+		</div>
+		<div class="form-goup">
+			<label for="id-valor">Valor</label>
+			<input type="text" name="valor" id="id-valor" class="form-control" value="${gasto.valor}" />
+		</div>
+		<div class="form-goup">
+			<label for="id-descricao">Nome</label>
+			<input type="text" name="descricao" id="id-descricao" class="form-control" value="${gasto.descricao}" />
+		</div>
+		<input type="submit" value="Salvar" class="btn btn-primary"/>
+		<a href="usuario?acao=listar" class="btn btn-danger">Cancelar</a>
+		</form>
+	</div>
+
+<%@ include file="footer.jsp" %>
+</body>
+</html>

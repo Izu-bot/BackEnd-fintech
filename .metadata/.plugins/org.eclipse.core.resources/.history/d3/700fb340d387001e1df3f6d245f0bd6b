@@ -1,0 +1,52 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+        <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Investimento</title>
+</head>
+<%@ include file="header.jsp" %>
+<body>
+<%@ include file="menu.jsp" %>
+	<main class="box-1">
+		<h1 class="m-4">Cadastrar um investimento</h1>
+	
+	<c:if test="${not empty msg }">
+				<div class="alert alert-success m-4">${msg}</div>
+			</c:if>
+			<c:if test="${not empty erro }">
+				<div class="alert alert-danger m-4">${erro}</div>
+			</c:if>
+	
+<form method="get" action="investimento">
+<input type="hidden" value="cadastrar" name="acao"/>
+
+<div class="form-goup m-4 p-4">
+			<label for="id-codigo">Código</label>
+			<input type="text" name="codigo" id="id-codigo" class="form-control" />
+		</div>
+  
+	
+  <p value="${usuario.codigoUsuario }"> </p>
+  
+	<div class="form-goup m-4 p-4">
+			<label for="id-nome">Nome</label>
+			<input type="text" name="nome" id="id-nome" class="form-control" value="${usuario.codigoUsuario }"/>
+		</div>
+ 		<div class="form-goup m-4 p-4" >
+			<label for="id-valor">Valor</label>
+			<input type="text" name="valor" id="id-valor" class="form-control" />
+		</div>
+  <div class="form-goup m-4 p-4">
+		<div class="form-floating">
+  <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" name="descricao"></textarea>
+  <label for="floatingTextarea2">Descrição</label>
+</div>
+		</div> 
+  <input type="submit" value="Salvar" class="btn btn-primary m-5" />
+</form>
+	</main>
+</body>
+</html>

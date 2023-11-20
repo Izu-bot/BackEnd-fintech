@@ -37,7 +37,7 @@ public class OracleUsuarioDAO implements UsuarioDAO{
 			stmt.executeUpdate();
 		} catch(SQLException e) {
 			e.printStackTrace();
-			throw new DBException("Erro ao cadastrar.");
+			throw new DBException("Erro ao cadastrar usuario.");
 		} finally {
 			try {
 				stmt.close();
@@ -62,7 +62,7 @@ public class OracleUsuarioDAO implements UsuarioDAO{
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DBException("Erro ao atualizar.");
+			throw new DBException("Erro ao atualizar Usuario.");
 		} finally {
 			try {
 				stmt.close();
@@ -84,7 +84,7 @@ public class OracleUsuarioDAO implements UsuarioDAO{
 			stmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new DBException("Erro ao remover.");
+			throw new DBException("Erro ao remover Usuario.");
 		} finally {
 			try {
 				stmt.close();

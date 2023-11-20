@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Editar</title>
-<%@ include file="header.jsp" %>
+<%@ include file="menu.jsp" %>
 </head>
 <body>
 <%@ include file="menu.jsp" %>
@@ -24,11 +24,10 @@
 			<label for="id-email">Email</label>
 			<input type="email" name="email" id="id-email" class="form-control" value="${usuario.email}" />
 		</div>
-		<input type="submit" value="Salvar" class="btn btn-primary">
+		<input type="submit" value="Salvar" class="btn btn-primary"/>
 		<a href="usuario?acao=listar" class="btn btn-danger">Cancelar</a>
 		</form>
 	</div>
 
-<%@ include file="footer.jsp" %>
-</body>
+<%@ include file="menu.jsp" %></body>
 </html>

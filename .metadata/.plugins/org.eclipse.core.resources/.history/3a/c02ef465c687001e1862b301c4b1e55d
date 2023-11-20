@@ -1,0 +1,23 @@
+package br.com.fintech.teste;
+
+import br.com.fintech.bean.Investimento;
+import br.com.fintech.dao.InvestimentoDAO;
+import br.com.fintech.exception.DBException;
+import br.com.fintech.factory.DAOFactory;
+
+public class InvestimentoDAOTeste {
+		public static void main(String[] args) {
+			InvestimentoDAO dao = DAOFactory.getInvestimentoDAO();
+			
+			Investimento investimento = new Investimento(0, 167,"Empresa", 180.0, "alguma coisa");
+			
+			try {
+				dao.cadastrar(investimento);
+				System.out.println("Investimento cadastrado");
+			} catch (DBException e) {
+				e.printStackTrace();
+			}
+			
+			List<Investimento> lista = dao.listar();
+		}
+}

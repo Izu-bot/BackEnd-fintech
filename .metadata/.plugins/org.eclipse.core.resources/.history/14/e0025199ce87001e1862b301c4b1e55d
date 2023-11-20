@@ -1,0 +1,69 @@
+package br.com.fintech.controller;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import br.com.fintech.bean.Investimento;
+import br.com.fintech.dao.InvestimentoDAO;
+import br.com.fintech.exception.DBException;
+import br.com.fintech.factory.DAOFactory;
+
+/**
+ * Servlet implementation class InvestimentoServlet
+ */
+@WebServlet("/investimento")
+public class InvestimentoServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+	private InvestimentoDAO dao;
+    
+    public InvestimentoServlet() {
+        super();
+        dao = DAOFactory.getInvestimentoDAO();
+    }
+
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String acao = request.getParameter("acao");
+		
+		switch(acao) {
+		case "cadastrar":
+			cadastrar(request,response);
+			break;
+		}
+	}
+	
+	private void cadastrar(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		try {
+			String nome = request.getParameter("nome");
+			double valor = Double.parseDouble(request.getParameter("valor"));
+			String descricao = request.getParameter("descricao");
+			int codigoUsu = Integer.parseInt(request.getParameter("codigoUsu"));
+			
+			Investimento investimento = new Investimento(0, 167, nome, valor, descricao);
+			dao.cadastrar(investimento);
+			
+			request.setAttribute("msg", "Investimento cadastro");
+		} catch (DBException db) {
+			db.printStackTrace();
+			request.setAttribute("erro", "Erro ao cadastra investimento");
+		} catch (Exception e ) {
+			e.printStackTrace();
+			request.setAttribute("erro", "Por favor, valide os dados");
+		}
+		request.getRequestDispatcher("cadastro-investimento.jsp").forward(request, response);
+		
+	}
+
+}

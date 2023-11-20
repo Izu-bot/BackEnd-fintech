@@ -10,9 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import br.com.fintech.bean.Usuario;
-import br.com.fintech.bo.EmailBO;
 import br.com.fintech.dao.UsuarioDAO;
-import br.com.fintech.exception.EmailException;
 import br.com.fintech.factory.DAOFactory;
 
 @WebServlet("/login")
@@ -28,14 +26,15 @@ public class LoguinServlet extends HttpServlet {
 //        bo = new EmailBO();
 	}
 	
+	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
 		String senha = request.getParameter("senha");
 		String email = request.getParameter("email");
 
+		// Após autenticar com sucesso
 		
 		Usuario usuario = new Usuario(senha, email);
-		
 		if(dao.validarUsuario(usuario)) {
 			HttpSession session = request.getSession();
 			session.setAttribute("user", email);

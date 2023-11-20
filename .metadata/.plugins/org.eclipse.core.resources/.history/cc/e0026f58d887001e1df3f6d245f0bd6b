@@ -1,0 +1,35 @@
+package br.com.fintech.teste;
+
+import java.util.List;
+
+import br.com.fintech.bean.Gasto;
+import br.com.fintech.bean.Investimento;
+import br.com.fintech.dao.GastoDAO;
+import br.com.fintech.exception.DBException;
+import br.com.fintech.factory.DAOFactory;
+
+public class GastoTeste {
+	public static void main(String[] args) {
+		
+		GastoDAO dao = DAOFactory.getGastoDAO();
+		
+		Gasto gasto = new Gasto(0, 167, "nome", 45, "asasa");
+		
+		try {
+			dao.cadastrar(gasto);
+			System.out.println("Investimento cadastrado");
+		} catch (DBException e) {
+			e.printStackTrace();
+		}
+					
+		
+		List<Gasto> lista = dao.listar();
+		for(Investimento item : lista ) {
+			System.out.println(item.getCodigoInvestimento() + " " + item.getCodigoUsuario() + " " + 
+				" " + item.getNome() + " " + item.getValor() + " " + item.getDescricao()
+					);
+		
+		}
+	}
+	}
+}

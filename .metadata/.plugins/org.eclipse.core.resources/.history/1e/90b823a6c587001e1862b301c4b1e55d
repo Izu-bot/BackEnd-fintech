@@ -1,0 +1,9 @@
+package br.com.fintech.teste;
+
+import br.com.fintech.factory.DAOFactory;
+
+public class InvestimentoDAOTeste {
+		public static void main(String[] args) {
+			InvesimentoDAO dao = DAOFactory.getInvestimentoDAO();
+		}
+}

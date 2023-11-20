@@ -118,7 +118,7 @@ public class UsuarioServlet extends HttpServlet {
 		try {			
 			String senha = request.getParameter("senha");
 			String email = request.getParameter("email");
-			int codigo  = Integer.parseInt(request.getParameter("codigo"));
+			int codigo = Integer.parseInt(request.getParameter("codigo"));
 
 			
 			Usuario usuario = new Usuario(codigo, senha, email);

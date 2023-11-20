@@ -1,0 +1,41 @@
+package br.com.fintech.dao.impl;
+
+import java.util.List;
+
+import br.com.fintech.bean.Gasto;
+import br.com.fintech.dao.GastoDAO;
+import br.com.fintech.exception.DBException;
+
+public class OracleGastoDAO  implements GastoDAO{
+
+	@Override
+	public void cadastrar(Gasto gasto) throws DBException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void atualizar(Gasto gasto) throws DBException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void remover(int cd) throws DBException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Gasto buscar(int cd) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Gasto> listar() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

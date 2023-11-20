@@ -1,0 +1,13 @@
+package br.com.fintech.bean;
+
+public class Gasto {
+	private int codigoGasto;
+	private int codigoUsuario;
+	private String nome;
+	private double valor;
+	private String descricao;
+	
+	public Gasto() {
+		super();
+	}
+}

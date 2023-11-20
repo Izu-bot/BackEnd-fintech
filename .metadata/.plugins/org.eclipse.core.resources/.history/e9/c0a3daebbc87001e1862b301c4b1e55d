@@ -1,0 +1,56 @@
+package br.com.fintech.dao.impl;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.List;
+
+import br.com.fintech.bean.Investimento;
+import br.com.fintech.dao.InvestimentoDAO;
+import br.com.fintech.exception.DBException;
+import br.com.fintech.singleton.Conexao;
+
+public class OracleIncvestimentoDAO implements InvestimentoDAO{
+
+	private Connection conexao;
+	
+
+	@Override
+	public void cadastrar(Investimento investimento) throws DBException {
+		
+		PreparedStatement stmt = null;
+		try {
+			conexao = Conexao.getInstance().getConnection();
+			String sql = "INSERT INTO T_INVESTIMENTO (CD_INVESTIMENTO, CD_USUARIO, NM_INVESTIMENTO, VLR_INVESTIDO, DS_INVESTIMENTO) VALUES (SEQ_INV.NEXTVAL, ?, ?, ?, ?)";
+			stmt = conexao.prepareStatement(sql);
+			stmt.setInt(1, investimento.getCodigoUsuario());
+			stmt.setString(2, investimento.getNome());
+			stmt.setDouble(3,  investimento.getValor());
+			stmt.setString(4, investimento.getDescricao());
+			
+			stmt.executeUpdate();
+		} catch(SQLException e) {
+			e.printStackTrace();
+			throw new DBException("Erro ao cadastrar investimento")
+		}
+	}
+
+	@Override
+	public void atualizar(Investimento investimento) throws DBException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void remover(int cd) throws DBException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Investimento> listar() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

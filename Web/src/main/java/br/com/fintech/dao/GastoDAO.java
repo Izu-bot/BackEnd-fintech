@@ -1,0 +1,14 @@
+package br.com.fintech.dao;
+
+import java.util.List;
+
+import br.com.fintech.bean.Gasto;
+import br.com.fintech.exception.DBException;
+
+public interface GastoDAO {
+	void cadastrar(Gasto gasto) throws DBException;
+	void atualizar(Gasto gasto) throws DBException;
+	void remover(int cd) throws DBException;
+	Gasto buscar(int cd);
+	List<Gasto> listar();
+}
